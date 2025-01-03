@@ -16,6 +16,7 @@ const HeaderComponent = () => {
           <ul>
             <li className='rounded-sm px-3 hover:bg-gray-600 hover:text-orange-500'>Students</li>
           </ul>
+          
         </nav>
       </div>
     </div>
