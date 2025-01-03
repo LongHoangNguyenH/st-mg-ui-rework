@@ -5,7 +5,9 @@ const HeaderComponent = () => {
   return (
     <div className="bg-black">
       <div className="py-5">
-        <span className="text-3xl px-5">STUDENT MANAGEMENT</span>
+        <Link href="/">
+          <span className="text-3xl px-5">STUDENT MANAGEMENT</span>
+        </Link>
       </div>
       <div>
         <nav className="flex flex-row px-2 text-xl">
