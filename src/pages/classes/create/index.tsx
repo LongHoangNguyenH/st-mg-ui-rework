@@ -1,5 +1,4 @@
 import React from 'react';
-import { Input } from '@mui/base/Input';
 
 const CreateClassPage = () => {
   return (
