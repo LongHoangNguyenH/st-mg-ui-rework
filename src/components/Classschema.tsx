@@ -8,7 +8,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { CLASS_MAX_LENGTH } from '@/constants/error';
 import { useMutation } from '@apollo/client';
-import { CREATECLASS } from '@/lib/graphql/mutation/Classes.action';
+import { CREATECLASS, GETALLCLASSES } from '@/lib/graphql/classes/Classes.action';
+import { useState } from 'react';
 
 const formSchema = z.object({
   className: z.string().max(9, {
@@ -24,13 +25,22 @@ export function ClassSchema() {
       className: '',
     },
   });
-  
-  // const [createClass] = useMutation(CREATECLASS)
+
+  const [CreateClass, { data, loading, error }] = useMutation(CREATECLASS, {
+    refetchQueries: [{ query: GETALLCLASSES }],
+  });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log(values.className);
+    try {
+      await CreateClass({ variables: { className: values.className }});
+      form.reset();
+      alert('Class created successfully!')
+      console.log('data: ',data)
+    } catch (err) {
+      console.log(err);
+    }
   }
-
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -39,16 +49,18 @@ export function ClassSchema() {
           name="className"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-black text-2xl'>Class Name</FormLabel>
+              <FormLabel className="text-black text-2xl">Class Name</FormLabel>
               <FormControl>
-                <Input className='text-black' placeholder="Class Name" {...field} />
+                <Input required className="text-black" placeholder="Class Name" {...field} />
               </FormControl>
               <FormDescription>Fill class name need to create</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className='hover:bg-gray-600 hover:text-orange-500' type="submit">Submit</Button>
+        <Button disabled={loading} className="hover:bg-gray-600 hover:text-orange-500" type="submit">
+          {loading ? 'Creating...':'Submit'}
+        </Button>
       </form>
     </Form>
   );
