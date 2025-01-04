@@ -3,18 +3,46 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
-import {Search} from 'lucide-react'
+import { Search } from 'lucide-react';
+import { useQuery } from '@apollo/client';
+import { GETALLCLASSES } from '@/lib/graphql/mutation/Classes.action';
+import { InferGetServerSidePropsType } from 'next';
+import client from '@/lib/graphql/apolloClient';
 
-const ClassesPage = () => {
+export const getServerSideProps = async () => {
+  try {
+    const { data, error, loading } = await client.query({
+      query: GETALLCLASSES,
+    });
+    return {
+      props: {
+        listClasses: data.findAll || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        listClasses: [],
+      },
+    };
+  }
+};
+
+const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5">
         <div className="">
-          <div className='flex flex-row justify-between pr-5'>
-            <Button><Link href='/classes/create'>create new class</Link></Button>
-            <div className='flex flex-row'>
-            <Button><Search/></Button>
-            <Input type="search" placeholder="class name" className='w-[200px]'/>
+          <div className="flex flex-row justify-between pr-5">
+            <Button>
+              <Link href="/classes/create">create new class</Link>
+            </Button>
+            <div className="flex flex-row">
+              <Button>
+                <Search />
+              </Button>
+              <Input type="search" placeholder="class name" className="w-[200px]" />
             </div>
           </div>
 
@@ -29,17 +57,21 @@ const ClassesPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow className="text-black">
-                <TableCell className="font-medium">0</TableCell>
-                <TableCell>
-                  <Link href="/classes/1">Class 1</Link>
-                </TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell className="flex gap-3">
-                  <Button className="bg-red-400 hover:bg-red-700">Delete</Button>
-                  <Button className="bg-orange-400 hover:bg-orange-600">Update</Button>
-                </TableCell>
-              </TableRow>
+              {listClasses.map((classItem: any, index: number) => (
+                <TableRow key={index} className="text-black">
+                  <TableCell className="font-medium">{index + 1}</TableCell>
+                  <TableCell>
+                    <Link href={`/classes/${classItem.id}`} className="hover:text-blue-400">
+                      {classItem.className}
+                    </Link>
+                  </TableCell>
+                  <TableCell>total</TableCell>
+                  <TableCell className="flex gap-3">
+                    <Button className="bg-red-400 hover:bg-red-700">Delete</Button>
+                    <Button className="bg-orange-400 hover:bg-orange-600">Update</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

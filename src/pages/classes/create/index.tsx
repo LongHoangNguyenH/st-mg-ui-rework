@@ -1,5 +1,6 @@
 import { ClassSchema } from '@/components/Classschema';
 import { Button } from '@/components/ui/button';
+import { useMutation } from '@apollo/client';
 import Link from 'next/link';
 import React from 'react';
 

@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { CLASS_MAX_LENGTH } from '@/constants/error';
+import { useMutation } from '@apollo/client';
+import { CREATECLASS } from '@/lib/graphql/mutation/Classes.action';
 
 const formSchema = z.object({
   className: z.string().max(9, {
@@ -22,13 +24,12 @@ export function ClassSchema() {
       className: '',
     },
   });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  
+  // const [createClass] = useMutation(CREATECLASS)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
+
 
   return (
     <Form {...form}>
