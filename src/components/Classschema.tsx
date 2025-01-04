@@ -8,8 +8,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { CLASS_MAX_LENGTH } from '@/constants/error';
 import { useMutation } from '@apollo/client';
-import { CREATECLASS, GETALLCLASSES } from '@/lib/graphql/classes/Classes.action';
+import { CREATECLASS, GETALLCLASSES } from '@/lib/graphql/mutation/Classes.action';
 import { useState } from 'react';
+import client from '@/lib/graphql/apolloClient';
 
 const formSchema = z.object({
   className: z.string().max(9, {
@@ -26,17 +27,19 @@ export function ClassSchema() {
     },
   });
 
-  const [CreateClass, { data, loading, error }] = useMutation(CREATECLASS, {
-    refetchQueries: [{ query: GETALLCLASSES }],
-  });
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values.className);
     try {
-      await CreateClass({ variables: { className: values.className }});
+      console.log('start here')
+      const { data } = await client.mutate({
+        mutation: CREATECLASS,
+        variables: { createClassInput: { className: values.className } },
+        refetchQueries: [{ query: GETALLCLASSES }],
+      });
+      console.log('step here')
       form.reset();
-      alert('Class created successfully!')
-      console.log('data: ',data)
+      alert('Class created successfully!');
+      console.log('data: ', data);  
     } catch (err) {
       console.log(err);
     }
@@ -58,8 +61,9 @@ export function ClassSchema() {
             </FormItem>
           )}
         />
-        <Button disabled={loading} className="hover:bg-gray-600 hover:text-orange-500" type="submit">
-          {loading ? 'Creating...':'Submit'}
+        <Button className="hover:bg-gray-600 hover:text-orange-500" type="submit">
+          {/* {loading ? 'Creating...' : 'Submit'} */}
+          Submit
         </Button>
       </form>
     </Form>

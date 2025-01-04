@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { useQuery } from '@apollo/client';
 import { GETALLCLASSES } from '@/lib/graphql/mutation/Classes.action';
 import { InferGetServerSidePropsType } from 'next';
 import client from '@/lib/graphql/apolloClient';

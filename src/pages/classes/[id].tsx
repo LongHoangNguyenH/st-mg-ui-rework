@@ -1,5 +1,5 @@
 import client from '@/lib/graphql/apolloClient';
-import { GETALLCLASSES, GETCLASSBYID } from '@/lib/graphql/classes/Classes.action';
+import { GETALLCLASSES, GETCLASSBYID } from '@/lib/graphql/mutation/Classes.action';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import * as React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const CREATECLASS = gql`
-  mutation CreateClass($className: String!) {
-    create(createClassInput: { className: $className }) {
+  mutation CreateClass($createClassInput: CreateClassInput!) {
+    create(createClassInput: $createClassInput) {
       id
       className
     }
@@ -10,21 +10,21 @@ const CREATECLASS = gql`
 `;
 
 const GETALLCLASSES = gql`
-  query getAllClasses{
+  query getAllClasses {
     findAll {
-      className,
+      className
       id
     }
   }
 `;
 
 const GETCLASSBYID = gql`
-  query findClassById($id: String!){
-    findOne(id: $id){
+  query findClassById($id: String!) {
+    findOne(id: $id) {
       id
       className
     }
   }
-`
+`;
 
 export { CREATECLASS, GETALLCLASSES, GETCLASSBYID };
