@@ -11,7 +11,7 @@ const ClassesPage = () => {
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5">
         <div className="">
           <div className='flex flex-row justify-between pr-5'>
-            <Button>create new class</Button>
+            <Button><Link href='/classes/create'>create new class</Link></Button>
             <div className='flex flex-row'>
             <Button><Search/></Button>
             <Input type="search" placeholder="class name" className='w-[200px]'/>
