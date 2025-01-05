@@ -10,7 +10,7 @@ const CREATE_CLASS = gql`
 `;
 
 const GET_ALL_CLASSES = gql`
-  query findAllClass{
+  query findAllClass {
     findAll {
       className
       id

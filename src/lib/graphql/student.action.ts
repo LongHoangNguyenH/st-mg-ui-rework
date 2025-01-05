@@ -1,15 +1,22 @@
 import { gql } from '@apollo/client';
 
-const GETALLSTUDENTS = gql`
-    query getAllStudents {
-        findAllStudents {
-            studentName
-            className
-            id
-        }
+const GET_ALL_STUDENTS = gql`
+  query {
+    findAllStudent {
+      id
+      classId
+      studentName
     }
+  }
 `;
 
-export {
-    GETALLSTUDENTS,
+const GET_STUDENT_BYID = gql`
+query findOneStudent($id: String!){
+    findOneStudent (id: $id){
+        id
+        classId
+        studentName
+    }
 }
+`
+export { GET_ALL_STUDENTS, GET_STUDENT_BYID };
