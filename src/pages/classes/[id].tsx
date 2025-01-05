@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
+import Link from 'next/link';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await client.query({
@@ -38,6 +39,16 @@ export const getStaticProps: GetStaticProps = async context => {
 };
 
 const ClassDetailPage = ({ classData }: { classData: { id: string; className: string } }) => {
+  const handleCopyClick = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        alert('Copied to clipboard');
+      },
+      err => {
+        console.log(err);
+      },
+    );
+  };
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5 pr-5 ">
@@ -53,16 +64,16 @@ const ClassDetailPage = ({ classData }: { classData: { id: string; className: st
                     <Label htmlFor="name">ClassId</Label>
                     <div className="flex flex-row">
                       <Input id="classId" disabled placeholder={classData.id} />
-                      <Button>
+                      <Button onClick={() => handleCopyClick(classData.id)}>
                         <Copy />
                       </Button>
                     </div>
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="className">ClassName</Label>
-                    <div className='flex flex-row'>
+                    <div className="flex flex-row">
                       <Input id="className" disabled placeholder={classData.className} className="text-black" />
-                      <Button>
+                      <Button onClick={() => handleCopyClick(classData.className)}>
                         <Copy />
                       </Button>
                     </div>
@@ -71,7 +82,7 @@ const ClassDetailPage = ({ classData }: { classData: { id: string; className: st
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button variant="outline">Back</Button>
+              <Button variant="outline"><Link href={'/classes'}>Back</Link></Button>
             </CardFooter>
           </Card>
         </div>
