@@ -8,7 +8,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { CLASS_MAX_LENGTH } from '@/constants/error';
 import { useMutation } from '@apollo/client';
-import { CREATECLASS, GETALLCLASSES } from '@/lib/graphql/mutation/Classes.action';
+import { CREATE_CLASS, GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import { useState } from 'react';
 import client from '@/lib/graphql/apolloClient';
 
@@ -32,9 +32,9 @@ export function ClassSchema() {
     try {
       console.log('start here')
       const { data } = await client.mutate({
-        mutation: CREATECLASS,
-        variables: { createClassInput: { className: values.className } },
-        refetchQueries: [{ query: GETALLCLASSES }],
+        mutation: CREATE_CLASS,
+        variables: { CREATE_CLASSInput: { className: values.className } },
+        refetchQueries: [{ query: GET_ALL_CLASSES }],
       });
       console.log('step here')
       form.reset();

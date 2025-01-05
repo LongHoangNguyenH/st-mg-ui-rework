@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { GETALLCLASSES } from '@/lib/graphql/mutation/Classes.action';
+import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import { InferGetServerSidePropsType } from 'next';
 import client from '@/lib/graphql/apolloClient';
 
 export const getServerSideProps = async () => {
   try {
     const { data, error, loading } = await client.query({
-      query: GETALLCLASSES,
+      query: GET_ALL_CLASSES,
     });
     return {
       props: {

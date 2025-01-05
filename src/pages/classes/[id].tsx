@@ -1,5 +1,5 @@
 import client from '@/lib/graphql/apolloClient';
-import { GETALLCLASSES, GETCLASSBYID } from '@/lib/graphql/mutation/Classes.action';
+import { GET_ALL_CLASSES, GET_CLASS_BYID } from '@/lib/graphql/Classes.action';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import * as React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +10,7 @@ import { Copy } from 'lucide-react';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await client.query({
-    query: GETALLCLASSES,
+    query: GET_ALL_CLASSES,
   });
 
   const paths = data.findAll.map((classItem: { id: string }) => ({
@@ -26,7 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async context => {
   const { id } = context.params!;
   const { data } = await client.query({
-    query: GETCLASSBYID,
+    query: GET_CLASS_BYID,
     variables: { id },
   });
 
@@ -38,7 +38,6 @@ export const getStaticProps: GetStaticProps = async context => {
 };
 
 const ClassDetailPage = ({ classData }: { classData: { id: string; className: string } }) => {
-  console.log(classData);
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5 pr-5 ">
