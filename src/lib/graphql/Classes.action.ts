@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const CREATE_CLASS = gql`
-  mutation CreateClass($createClassInput: CreateClassInput!) {
-    create(createClassInput: $createClassInput) {
+  mutation create($className: String!) {
+    create(createClassInput: { className: $className }) {
       id
       className
     }

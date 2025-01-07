@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -6,42 +6,32 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { CLASS_MAX_LENGTH } from '@/constants/error';
 import { useMutation } from '@apollo/client';
-import { CREATE_CLASS, GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
-import { useState } from 'react';
-import client from '@/lib/graphql/apolloClient';
+import { CREATE_CLASS } from '@/lib/graphql/Classes.action';
 
-const formSchema = z.object({
-  className: z.string().max(9, {
-    message: CLASS_MAX_LENGTH,
-  }),
+const ClassSchema = z.object({
+  className: z.string().max(9).min(2).nonempty(),
 });
 
-export function ClassSchema() {
+export function CreateClassForm() {
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof ClassSchema>>({
+    resolver: zodResolver(ClassSchema),
     defaultValues: {
       className: '',
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values.className);
+  const [createClassMutation, { loading }] = useMutation(CREATE_CLASS);
+
+  async function onSubmit(values: z.infer<typeof ClassSchema>) {
     try {
-      console.log('start here')
-      const { data } = await client.mutate({
-        mutation: CREATE_CLASS,
-        variables: { CREATE_CLASSInput: { className: values.className } },
-        refetchQueries: [{ query: GET_ALL_CLASSES }],
+      await createClassMutation({
+        variables: { className: values.className },
       });
-      console.log('step here')
       form.reset();
-      alert('Class created successfully!');
-      console.log('data: ', data);  
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   }
   return (
@@ -54,7 +44,12 @@ export function ClassSchema() {
             <FormItem>
               <FormLabel className="text-black text-2xl">Class Name</FormLabel>
               <FormControl>
-                <Input required className="text-black" placeholder="Class Name" {...field} />
+                <Input
+                  required
+                  className="text-black"
+                  placeholder="Class Name"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>Fill class name need to create</FormDescription>
               <FormMessage />
@@ -62,8 +57,7 @@ export function ClassSchema() {
           )}
         />
         <Button className="hover:bg-gray-600 hover:text-orange-500" type="submit">
-          {/* {loading ? 'Creating...' : 'Submit'} */}
-          Submit
+          {loading ? 'Creating...' : 'Submit'}
         </Button>
       </form>
     </Form>

@@ -5,12 +5,14 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import client from '@/lib/graphql/apolloClient';
 import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import { GET_ALL_STUDENTS } from '@/lib/graphql/student.action';
+import { studentType } from '@/types/studentType';
 import { Search } from 'lucide-react';
-import { InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useState } from 'react';
 
-export const getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<{ listStudents: studentType[] }> = async ({}) => {
   try {
     const { data, error, loading } = await client.query({
       query: GET_ALL_STUDENTS,
@@ -30,7 +32,17 @@ export const getServerSideProps = async () => {
 };
 
 const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(listStudents);
+  const [studentNameSearchValue, setStudentNameSearchValue] = useState('');
+  const [classNameSearchValue, setClassNameSearchValue] = useState('');
+
+  const handleSubmitSearchByClassName = () => {
+
+  }
+
+  const handleSubmitSearchByStudentName = () => {
+    
+  }
+
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5">
@@ -39,17 +51,29 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
             <div className="flex flex-row justify-between pr-5">
               <div className="text-black">
                 <div className="flex flex-row">
-                  <Button>
+                  <Button onClick={() => handleSubmitSearchByClassName()}>
                     <Search />
                   </Button>
-                  <Input type="search" placeholder="Class Name" className="w-[200px]" />
+                  <Input
+                    type="search"
+                    placeholder="Class Name"
+                    className="w-[200px]"
+                    value={classNameSearchValue}
+                    onChange={e => setClassNameSearchValue(e.target.value)}
+                  />
                 </div>
 
                 <div className="flex flex-row mt-5">
-                  <Button>
+                  <Button onClick={() => handleSubmitSearchByStudentName()}>
                     <Search />
                   </Button>
-                  <Input type="search" placeholder="Student Name" className="w-[200px]" />
+                  <Input
+                    type="search"
+                    placeholder="Student Name"
+                    className="w-[200px]"
+                    value={studentNameSearchValue}
+                    onChange={e => setStudentNameSearchValue(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
@@ -77,7 +101,7 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell>
                     <Link href={`/classes/${studentItem.classId}`} className="hover:text-blue-400">
-                      {studentItem.classId}
+                      {studentItem.className}
                     </Link>
                   </TableCell>
                   <TableCell>
