@@ -22,13 +22,14 @@ export function CreateClassForm() {
     },
   });
 
-  const [createClassMutation, { loading }] = useMutation(CREATE_CLASS);
+  const [createClassMutation, { loading }] = useMutation(CREATE_CLASS, {refetchQueries: ['findAllClasses']});
 
   async function onSubmit(values: z.infer<typeof ClassSchema>) {
     try {
       await createClassMutation({
         variables: { className: values.className },
       });
+      alert('Class created successfully');
       form.reset();
     } catch (error) {
       console.log(error);
