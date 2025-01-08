@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { ClassType, useCallback } from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
-import { InferGetServerSidePropsType } from 'next';
+import { GET_ALL_CLASSES, REMOVE_A_CLASS } from '@/lib/graphql/Classes.action';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import client from '@/lib/graphql/apolloClient';
+import { useMutation } from '@apollo/client';
+import { classType } from '@/types/classType';
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = (async () => {
   try {
-    const { data, error, loading } = await client.query({
+    const { data } = await client.query({
       query: GET_ALL_CLASSES,
+      fetchPolicy: 'no-cache',
     });
     return {
       props: {
-        listClasses: data.findAll || [],
+        listClasses: data.findAllClasses as classType[],
       },
     };
   } catch (error) {
@@ -26,9 +29,29 @@ export const getServerSideProps = async () => {
       },
     };
   }
-};
+}) satisfies GetServerSideProps<{
+  listClasses: classType[];
+}>;
 
 const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [removeClass] = useMutation(REMOVE_A_CLASS, { refetchQueries: ['findAllClasses'] });
+  const submitRemoveClass = useCallback(
+    async (id: string) => {
+      try {
+        await removeClass({
+          variables: { id },
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+        } else {
+          alert('An unexpected error orccurred.');
+        }
+      }
+    },
+    [removeClass],
+  );
+
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5">
@@ -66,7 +89,15 @@ const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServ
                   </TableCell>
                   <TableCell>total</TableCell>
                   <TableCell className="flex gap-3">
-                    <Button className="bg-red-400 hover:bg-red-700">Delete</Button>
+                    <Button
+                      className="bg-red-400 hover:bg-red-700"
+                      onClick={e => {
+                        e.preventDefault();
+                        submitRemoveClass(classItem.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
                     <Button className="bg-orange-400 hover:bg-orange-600">Update</Button>
                   </TableCell>
                 </TableRow>
