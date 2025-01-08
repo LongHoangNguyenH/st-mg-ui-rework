@@ -5,7 +5,9 @@ import { z } from 'zod';
 import { Button } from './ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { Input } from './ui/input';
-import ClassCombobox from './ClassCombobox';
+import { ClassMenuDropDown } from './ClassMenuDropdown';
+import { useMutation } from '@apollo/client';
+import { CREATE_STUDENT } from '@/lib/graphql/student.action';
 
 const formSchema = z.object({
   studentName: z
@@ -21,13 +23,23 @@ const CreateStudentForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        studentName: '',
-        classId: '',
+      studentName: '',
+      classId: '',
     },
   });
 
+  const [createStudentMutation, { loading }] = useMutation(CREATE_STUDENT, { refetchQueries: ['findAllStudent'] });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    await createStudentMutation({
+      variables: {
+        classId: values.classId,
+        studentName: values.studentName,
+      },
+    });
+    alert('Create Student Successfully');
+    form.reset();
   }
   return (
     <Form {...form}>
@@ -48,20 +60,26 @@ const CreateStudentForm = () => {
         />
 
         <FormField
-        control={form.control}
-        name="classId"  
-        render={({ field }) => (
+          control={form.control}
+          name="classId"
+          render={({ field }) => (
             <FormItem>
-                <FormLabel className='text-black'>Select Class Name</FormLabel>
-                <ClassCombobox/>
+              <FormLabel className="text-black mr-5">Select Class Name</FormLabel>
+              <ClassMenuDropDown />
             </FormItem>
-        )}
+          )}
         />
 
         
-        <Button className="hover:bg-gray-600 hover:text-orange-500" type="submit">
-          {/* {loading ? 'Creating...' : 'Submit'} */}
-          Submit
+
+        <Button
+          className="hover:bg-gray-600 hover:text-orange-500"
+          type="submit"
+          onClick={() => {
+            onSubmit(form.getValues());
+          }}
+        >
+          {loading ? 'Creating...' : 'Submit'}
         </Button>
       </form>
     </Form>
