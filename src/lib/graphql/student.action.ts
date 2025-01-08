@@ -2,10 +2,7 @@ import { gql } from '@apollo/client';
 
 const CREATE_STUDENT = gql`
   mutation CreateStudent($studentName: String!, $classId: String!) {
-    createStudent(
-      createStudentInput: {studentName: $studentName, classId: $classId}
-    )
-    {
+    createStudent(createStudentInput: { studentName: $studentName, classId: $classId }) {
       studentName
       classId
     }
