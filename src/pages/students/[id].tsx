@@ -1,5 +1,4 @@
 import client from '@/lib/graphql/apolloClient';
-import { GET_ALL_CLASSES, GET_CLASS_BYID } from '@/lib/graphql/Classes.action';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import * as React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';

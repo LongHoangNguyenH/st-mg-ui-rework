@@ -1,4 +1,4 @@
-import React, { ClassType, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';

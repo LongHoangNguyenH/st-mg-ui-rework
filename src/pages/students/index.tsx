@@ -2,14 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import client from '@/lib/graphql/apolloClient';
-import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import { GET_ALL_STUDENTS } from '@/lib/graphql/student.action';
 import { studentType } from '@/types/studentType';
 import { Search } from 'lucide-react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
 export const getServerSideProps: GetServerSideProps<{ listStudents: studentType[] }> = async ({}) => {
   try {

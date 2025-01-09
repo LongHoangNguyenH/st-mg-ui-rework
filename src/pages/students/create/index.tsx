@@ -1,4 +1,3 @@
-import { CreateClassForm } from '@/components/Create-Class-Form';
 import StudentSchema from '@/components/Create-Student-Form';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
