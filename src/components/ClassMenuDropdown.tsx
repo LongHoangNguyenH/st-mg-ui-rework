@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,7 +15,7 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import client from '@/lib/graphql/apolloClient';
 
-export function ClassMenuDropDown() {
+export function ClassMenuDropDown({ onClassSelect }: { onClassSelect: (className: string) => void }) {
   const [position, setPosition] = React.useState('bottom');
   const [currentClass, setCurrentClass] = React.useState('Classes');
   const [listClasses, setListClasses] = React.useState([]);
@@ -26,6 +25,11 @@ export function ClassMenuDropDown() {
       .query({ query: GET_ALL_CLASSES, fetchPolicy: 'no-cache' })
       .then(({ data }) => setListClasses(data.findAllClasses));
   }, [setListClasses]);
+
+  const handleClassSelect = (className: string, classId: string) => {
+    setCurrentClass(className);
+    onClassSelect(classId); // Gọi callback để truyền dữ liệu lên component cha
+  };
 
   return (
     <DropdownMenu>
@@ -38,7 +42,11 @@ export function ClassMenuDropDown() {
         <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
           {listClasses.length > 0 ? (
             listClasses.map((cls: any, index: any) => (
-              <DropdownMenuRadioItem key={index} value={cls.id} onClick={() => setCurrentClass(cls.className)}>
+              <DropdownMenuRadioItem
+                key={index}
+                value={cls.id}
+                onClick={() => handleClassSelect(cls.className, cls.id)}
+              >
                 {cls.className}
               </DropdownMenuRadioItem>
             ))

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from './ui/button';
@@ -29,12 +29,16 @@ const CreateStudentForm = () => {
   });
 
   const [createStudentMutation, { loading }] = useMutation(CREATE_STUDENT, { refetchQueries: ['findAllStudent'] });
+  const [selectedClass, setSelectedClass] = useState('');
+
+  const handleClassSelect = (className: string) => {
+    setSelectedClass(className);
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     await createStudentMutation({
       variables: {
-        classId: values.classId,
+        classId: selectedClass,
         studentName: values.studentName,
       },
     });
@@ -65,7 +69,7 @@ const CreateStudentForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-black mr-5">Select Class Name</FormLabel>
-              <ClassMenuDropDown />
+              <ClassMenuDropDown onClassSelect={handleClassSelect}/>
             </FormItem>
           )}
         />

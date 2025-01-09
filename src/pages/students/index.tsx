@@ -16,7 +16,6 @@ export const getServerSideProps: GetServerSideProps<{ listStudents: studentType[
     const { data } = await client.query({
       query: GET_ALL_STUDENTS,
     });
-    console.log(data);
     return {
       props: {
         listStudents: data.findAllStudent || [],
