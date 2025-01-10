@@ -11,13 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useQuery } from '@apollo/client';
 import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import client from '@/lib/graphql/apolloClient';
 
 export function ClassMenuDropDown({ onClassSelect }: { onClassSelect: (className: string) => void }) {
   const [position, setPosition] = React.useState('bottom');
-  const [currentClass, setCurrentClass] = React.useState('Classes');
+  const [currentClass, setCurrentClass] = React.useState('classes');
   const [listClasses, setListClasses] = React.useState([]);
 
   React.useEffect(() => {
@@ -28,7 +27,7 @@ export function ClassMenuDropDown({ onClassSelect }: { onClassSelect: (className
 
   const handleClassSelect = (className: string, classId: string) => {
     setCurrentClass(className);
-    onClassSelect(classId); // Gọi callback để truyền dữ liệu lên component cha
+    onClassSelect(classId);
   };
 
   return (

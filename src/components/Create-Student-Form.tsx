@@ -8,6 +8,7 @@ import { Input } from './ui/input';
 import { ClassMenuDropDown } from './ClassMenuDropdown';
 import { useMutation } from '@apollo/client';
 import { CREATE_STUDENT } from '@/lib/graphql/student.action';
+import { AlertClassNotSelect } from './AlertDialog';
 
 const formSchema = z.object({
   studentName: z
@@ -29,7 +30,7 @@ const CreateStudentForm = () => {
   });
 
   const [createStudentMutation, { loading }] = useMutation(CREATE_STUDENT, { refetchQueries: ['findAllStudent'] });
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedClass, setSelectedClass] = useState('classes');
 
   const handleClassSelect = (className: string) => {
     setSelectedClass(className);
@@ -69,22 +70,24 @@ const CreateStudentForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-black mr-5">Select Class Name</FormLabel>
-              <ClassMenuDropDown onClassSelect={handleClassSelect}/>
+              <ClassMenuDropDown onClassSelect={handleClassSelect} />
             </FormItem>
           )}
         />
 
-        
-
-        <Button
-          className="hover:bg-gray-600 hover:text-orange-500"
-          type="submit"
-          onClick={() => {
-            onSubmit(form.getValues());
-          }}
-        >
-          {loading ? 'Creating...' : 'Submit'}
-        </Button>
+        {selectedClass == 'classes' ? (
+          <AlertClassNotSelect />
+        ) : (
+          <Button
+            className="hover:bg-gray-600 hover:text-orange-500"
+            type="submit"
+            onClick={() => {
+              onSubmit(form.getValues());
+            }}
+          >
+            {loading ? 'Creating...' : 'Submit'}
+          </Button>
+        )}
       </form>
     </Form>
   );

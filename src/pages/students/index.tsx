@@ -1,3 +1,4 @@
+import { AlertClassNotSelect } from '@/components/AlertDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -58,19 +59,18 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
               </Button>
             </div>
           </div>
-
-          {listStudents.length > 0 ? (
-            listStudents.map((studentItem: any, index: number) => (
-              <Table className="mt-5">
-                <TableCaption>List of All Students.</TableCaption>
-                <TableHeader className="border-b-2 bg-400 rounded-sm">
-                  <TableRow className="">
-                    <TableHead className="w-[50px]">No</TableHead>
-                    <TableHead className="">Class Name</TableHead>
-                    <TableHead>Student Name</TableHead>
-                    <TableHead>Action</TableHead>
-                  </TableRow>
-                </TableHeader>
+          <Table className="mt-5">
+            <TableCaption>List of All Students.</TableCaption>
+            <TableHeader className="border-b-2 bg-400 rounded-sm">
+              <TableRow className="">
+                <TableHead className="w-[50px]">No</TableHead>
+                <TableHead className="">Class Name</TableHead>
+                <TableHead>Student Name</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            {listStudents.length > 0 ? (
+              listStudents.map((studentItem: any, index: number) => (
                 <TableBody>
                   <TableRow key={index} className="text-black">
                     <TableCell className="font-medium">{index + 1}</TableCell>
@@ -90,13 +90,13 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
                     </TableCell>
                   </TableRow>
                 </TableBody>
-              </Table>
-            ))
-          ) : (
-            <div className="w-full flex justify-center">
-              <span className="text-black mt-10">No students found Please create new student</span>
-            </div>
-          )}
+              ))
+            ) : (
+              <div className="w-full flex justify-center">
+                <span className="text-black mt-10">No students found Please create new student</span>
+              </div>
+            )}
+          </Table>
         </div>
       </div>
     </div>

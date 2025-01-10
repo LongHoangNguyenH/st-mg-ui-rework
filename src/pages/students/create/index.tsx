@@ -10,6 +10,9 @@ const CreateStudentPage = () => {
         <Button className="hover:bg-gray-600 hover:text-orange-500">
           <Link href="/students">Back To List Students</Link>
         </Button>
+        <Button className="hover:bg-gray-600 hover:text-orange-500 ml-3">
+          <Link href="/classes/create">Create Class</Link>
+        </Button>
         <div className="mt-5">
           <StudentSchema />
         </div>
