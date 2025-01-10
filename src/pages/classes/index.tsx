@@ -41,6 +41,7 @@ const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServ
         await removeClass({
           variables: { id },
         });
+        alert('class delete successfully')
       } catch (error) {
         if (error instanceof Error) {
           alert(error.message);

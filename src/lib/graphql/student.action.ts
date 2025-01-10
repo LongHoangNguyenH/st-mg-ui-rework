@@ -51,13 +51,9 @@ const GET_STUDENT_BY_STUDENTNAME = gql`
 `;
 
 const DELETE_A_STUDENT = gql`
-  mutation DeleteStudent($id: Int!) {
-    deleteStudent(id: $id) {
-      id
-      studentName
-      cls {
-        className
-      }
+  mutation RemoveStudents($id: String!) {
+    removeStudents(id: $id) {
+      message
     }
   }
 `;

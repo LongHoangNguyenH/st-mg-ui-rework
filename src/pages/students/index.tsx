@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import client from '@/lib/graphql/apolloClient';
-import { GET_ALL_STUDENTS } from '@/lib/graphql/student.action';
+import { DELETE_A_STUDENT, GET_ALL_STUDENTS } from '@/lib/graphql/student.action';
 import { studentType } from '@/types/studentType';
+import { useMutation } from '@apollo/client';
 import { Search } from 'lucide-react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export const getServerSideProps: GetServerSideProps<{ listStudents: studentType[] }> = async ({}) => {
   try {
@@ -30,6 +31,25 @@ export const getServerSideProps: GetServerSideProps<{ listStudents: studentType[
 };
 
 const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [removeStudent] = useMutation(DELETE_A_STUDENT, { refetchQueries: ['findAllStudent'] });
+
+  const submitRemoveStudent = useCallback(
+    async (id: string) => {
+      console.log(id)
+      try {
+        await removeStudent({ variables: { id } });
+        alert('Student Deleted Successfully');
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+        } else {
+          alert('An unexpected error orccurred.');
+        }
+      }
+    },
+    [removeStudent],
+  );
+
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5 mr-5">
@@ -85,7 +105,9 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
                       </Link>
                     </TableCell>
                     <TableCell className="flex gap-3">
-                      <Button className="bg-red-400 hover:bg-red-700">Delete</Button>
+                      <Button className="bg-red-400 hover:bg-red-700" onClick={() => submitRemoveStudent(studentItem.id)}>
+                        Delete
+                      </Button>
                       <Button className="bg-orange-400 hover:bg-orange-600">Update</Button>
                     </TableCell>
                   </TableRow>
