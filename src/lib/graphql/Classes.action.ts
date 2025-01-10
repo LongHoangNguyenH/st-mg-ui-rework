@@ -19,8 +19,8 @@ const GET_ALL_CLASSES = gql`
 `;
 
 const GET_CLASS_BYID = gql`
-  query findClassById($id: String!) {
-    findOne(id: $id) {
+  query findOneClass($id: String!) {
+    findOneClass(id: $id) {
       id
       className
     }

@@ -14,7 +14,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query: GET_ALL_CLASSES,
   });
 
-  const paths = data.findAll.map((classItem: { id: string }) => ({
+  const paths = data.findAllClasses.map((classItem: { id: string }) => ({
     params: { id: classItem.id },
   }));
 
@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps = async context => {
 
   return {
     props: {
-      classData: data.findOne,
+      classData: data.findOneClass,
     },
   };
 };
