@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { GET_STUDENT_BYID, UPDATE_STUDENT } from '@/lib/graphql/student.action';
+import { GET_ALL_STUDENTS, GET_STUDENT_BYID, UPDATE_STUDENT } from '@/lib/graphql/student.action';
 import { useMutation, useQuery } from '@apollo/client';
 import { Copy } from 'lucide-react';
 import Link from 'next/link';
@@ -13,9 +13,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 const UpdateStudentPage = () => {
   const router = useRouter();
   const id = router.query['id'] as string;
-  const [updateStudent] = useMutation(UPDATE_STUDENT)
+  const [updateStudent] = useMutation(UPDATE_STUDENT,{
+    refetchQueries: [{query: GET_ALL_STUDENTS}]
+  });
 
-  const { data, loading, error } = useQuery(GET_STUDENT_BYID, {
+  const { data, loading } = useQuery(GET_STUDENT_BYID, {
     variables: { id },
     skip: !id,
   });

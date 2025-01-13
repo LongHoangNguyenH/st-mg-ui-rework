@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { GET_CLASS_BYID, UPDATE_CLASS } from '@/lib/graphql/Classes.action';
+import { GET_ALL_CLASSES, GET_CLASS_BYID, UPDATE_CLASS } from '@/lib/graphql/Classes.action';
 import { useMutation, useQuery } from '@apollo/client';
 import { Copy } from 'lucide-react';
 import Link from 'next/link';
@@ -12,9 +12,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 const UpdateClassPage = () => {
   const router = useRouter();
   const id = router.query['id'] as string;
-  const [updateClass] = useMutation(UPDATE_CLASS);
+  const [updateClass] = useMutation(UPDATE_CLASS, {
+    refetchQueries:[{query: GET_ALL_CLASSES}],
+  });
 
-  const { data, loading, error } = useQuery(GET_CLASS_BYID, {
+  const { data, loading } = useQuery(GET_CLASS_BYID, {
     variables: { id },
     skip: !id,
   });
