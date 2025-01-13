@@ -108,7 +108,9 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
                       <Button className="bg-red-400 hover:bg-red-700" onClick={() => submitRemoveStudent(studentItem.id)}>
                         Delete
                       </Button>
-                      <Button className="bg-orange-400 hover:bg-orange-600">Update</Button>
+                      <Button className="bg-orange-400 hover:bg-orange-600">
+                        <Link href={`students/update/${studentItem.id}`}>Update</Link>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 </TableBody>

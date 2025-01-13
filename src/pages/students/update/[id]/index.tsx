@@ -1,44 +1,50 @@
+import { ClassMenuDropDown } from '@/components/ClassMenuDropdown';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { GET_CLASS_BYID, UPDATE_CLASS } from '@/lib/graphql/Classes.action';
+import { GET_STUDENT_BYID, UPDATE_STUDENT } from '@/lib/graphql/student.action';
 import { useMutation, useQuery } from '@apollo/client';
 import { Copy } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
-const UpdateClassPage = () => {
+const UpdateStudentPage = () => {
   const router = useRouter();
   const id = router.query['id'] as string;
-  const [updateClass] = useMutation(UPDATE_CLASS);
+  const [updateStudent] = useMutation(UPDATE_STUDENT)
 
-  const { data, loading, error } = useQuery(GET_CLASS_BYID, {
+  const { data, loading, error } = useQuery(GET_STUDENT_BYID, {
     variables: { id },
     skip: !id,
   });
 
-  const [currentClass, setCurrentClass] = useState("");
-  const [newClassName, setNewClassName] = useState(" ");
+  const [currentStudent, setCurrentStudent] = useState(Object);
+  const [newClassId, setNewClassId] = useState("");
+  const [newStudentName, setNewStudentName] = useState("");
 
   useEffect(() => {
-    if (data && data.findOneClass) {
-      setCurrentClass(data.findOneClass.className);
-      console.log('currentClass', data.findOneClass); // Log giá trị khi dữ liệu đã sẵn sàng
+    if (data && data.findOneStudent) {
+      setCurrentStudent(data.findOneStudent);
+      console.log('currentClass', data.findOneStudent); // Log giá trị khi dữ liệu đã sẵn sàng
+      setNewClassId(data.findOneStudent.classId)
+      setNewStudentName(data.findOneStudent.studentName)
     }
   }, [data]);
 
   const submitUpdateClass = useCallback(async () => {
-    console.log(id);
-    console.log(newClassName);
+    console.log(id)
+    console.log(newClassId)
+    console.log(newStudentName)
     try {
-      await updateClass({
-        variables: {
+      await updateStudent({
+        variables:{
           id: id,
-          className: newClassName,
-        },
-      });
+          classId: newClassId,
+          studentName: newStudentName
+        }
+      })
       alert('Update class successfully');
     } catch (error) {
       if (error instanceof Error) {
@@ -47,7 +53,7 @@ const UpdateClassPage = () => {
         alert('unexpected error');
       }
     }
-  }, [id, newClassName, updateClass]);
+  }, [id, newClassId,newStudentName, updateStudent]);
 
   const handleCopyClick = (text: string) => {
     navigator.clipboard.writeText(text).then(
@@ -60,19 +66,24 @@ const UpdateClassPage = () => {
     );
   };
 
+  const handleSelect = useCallback((className: string) => {
+    setNewClassId(className)
+  },[])
+
   return (
     <div className="flex justify-center">
       <div className="w-[900px] bg-white min-h-screen rounded-sm pt-5 pl-5">
         <div className="flex justify-center">
           <Card className="w-[550px]">
             <CardHeader className="items-center">
-              <CardTitle>CLASS INFORMATION DETAIL</CardTitle>
+              <CardTitle>STUDENT INFORMATION DETAIL</CardTitle>
             </CardHeader>
             <CardContent>
               <form>
                 <div className="grid w-full items-center gap-4">
+
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="name">ClassId</Label>
+                    <Label htmlFor="name">Student ID</Label>
                     <div className="flex flex-row">
                       <Input id="classId" disabled placeholder={`${id}`} />
                       <Button onClick={() => handleCopyClick(`${id}`)} variant="default">
@@ -80,23 +91,30 @@ const UpdateClassPage = () => {
                       </Button>
                     </div>
                   </div>
+
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="className">ClassName</Label>
+                    <Label htmlFor="className">Student Name</Label>
                     <div className="flex flex-row">
                       <Input
-                        id="className"
+                        id="studentName"
                         className="text-black"
-                        placeholder={`${currentClass}`}
-                        onChange={(e) => setNewClassName(e.target.value)}
+                        placeholder={`${currentStudent.studentName}`}
+                        onChange={(e) => setNewStudentName(e.target.value)}
                       />
                     </div>
                   </div>
+
+                  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="className">Class Name</Label>
+                    <ClassMenuDropDown onClassSelect={handleSelect} currentParentClass={currentStudent.className}/>
+                  </div>
+
                 </div>
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button variant="outline">
-                <Link href={'/classes'}>Back</Link>
+                <Link href={'/students'}>Back</Link>
               </Button>
               <Button onClick={() => submitUpdateClass()} variant="default">
                 {loading ? 'Loading...' : 'Update'}
@@ -109,4 +127,4 @@ const UpdateClassPage = () => {
   );
 };
 
-export default UpdateClassPage;
+export default UpdateStudentPage;

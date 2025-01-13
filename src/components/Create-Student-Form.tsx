@@ -70,7 +70,7 @@ const CreateStudentForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-black mr-5">Select Class Name</FormLabel>
-              <ClassMenuDropDown onClassSelect={handleClassSelect} />
+              <ClassMenuDropDown onClassSelect={handleClassSelect} currentParentClass=''/>
             </FormItem>
           )}
         />

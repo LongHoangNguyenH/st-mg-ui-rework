@@ -26,6 +26,7 @@ const GET_STUDENT_BYID = gql`
       id
       classId
       studentName
+      className
     }
   }
 `;
@@ -57,6 +58,16 @@ const DELETE_A_STUDENT = gql`
     }
   }
 `;
+
+const UPDATE_STUDENT = gql`
+  mutation UpdateStudent($id: String!, $classId: String!, $studentName: String!) {
+    updateStudent(id: $id, updateStudentInput: { classId: $classId, studentName: $studentName }){
+      id
+      studentName
+      classId
+    }
+  }
+`;
 export {
   GET_ALL_STUDENTS,
   CREATE_STUDENT,
@@ -64,4 +75,5 @@ export {
   GET_STUDENT_BYID,
   GET_STUDENT_BYCLASSNAME,
   GET_STUDENT_BY_STUDENTNAME,
+  UPDATE_STUDENT,
 };

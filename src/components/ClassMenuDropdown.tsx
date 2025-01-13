@@ -14,10 +14,26 @@ import {
 import { GET_ALL_CLASSES } from '@/lib/graphql/Classes.action';
 import client from '@/lib/graphql/apolloClient';
 
-export function ClassMenuDropDown({ onClassSelect }: { onClassSelect: (className: string) => void }) {
+export function ClassMenuDropDown({
+  onClassSelect,
+  currentParentClass,
+}: {
+  onClassSelect: (className: string) => void;
+  currentParentClass: string;
+}) {
+
   const [position, setPosition] = React.useState('bottom');
-  const [currentClass, setCurrentClass] = React.useState('classes');
+  const [currentClass, setCurrentClass] = React.useState(currentParentClass);
   const [listClasses, setListClasses] = React.useState([]);
+
+  React.useEffect(() => {
+    if (currentParentClass === '') {
+      setCurrentClass('classes');
+    } else {
+      setCurrentClass(currentParentClass);
+    }
+    console.log(currentParentClass);
+  }, [currentParentClass]);
 
   React.useEffect(() => {
     client
