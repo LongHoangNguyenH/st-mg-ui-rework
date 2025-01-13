@@ -61,7 +61,7 @@ const DELETE_A_STUDENT = gql`
 
 const UPDATE_STUDENT = gql`
   mutation UpdateStudent($id: String!, $classId: String!, $studentName: String!) {
-    updateStudent(id: $id, updateStudentInput: { classId: $classId, studentName: $studentName }){
+    updateStudent(id: $id, updateStudentInput: { classId: $classId, studentName: $studentName }) {
       id
       studentName
       classId
