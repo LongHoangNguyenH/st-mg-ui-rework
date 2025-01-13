@@ -35,4 +35,13 @@ const REMOVE_A_CLASS = gql`
   }
 `;
 
-export { CREATE_CLASS, GET_ALL_CLASSES, GET_CLASS_BYID, REMOVE_A_CLASS };
+const UPDATE_CLASS = gql`
+  mutation UpdateClass($id: String!, $className: String!) {
+    updateClass(id: $id, updateClassInput: { className: $className }) {
+      id
+      className
+    }
+  }
+`;
+
+export { CREATE_CLASS, GET_ALL_CLASSES, GET_CLASS_BYID, REMOVE_A_CLASS, UPDATE_CLASS };

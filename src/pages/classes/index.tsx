@@ -99,7 +99,9 @@ const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServ
                     >
                       Delete
                     </Button>
-                    <Button className="bg-orange-400 hover:bg-orange-600">Update</Button>
+                    <Button className="bg-orange-400 hover:bg-orange-600">
+                      <Link href={`/classes/update/${classItem.id}`}>Update</Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
