@@ -34,14 +34,14 @@ export const getServerSideProps = (async () => {
 }>;
 
 const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [removeClass] = useMutation(REMOVE_A_CLASS, { refetchQueries: ['findAllClasses'] });
+  const [removeClass] = useMutation(REMOVE_A_CLASS, { refetchQueries: [{ query: GET_ALL_CLASSES }] });
   const submitRemoveClass = useCallback(
     async (id: string) => {
       try {
         await removeClass({
           variables: { id },
         });
-        alert('class delete successfully')
+        alert('class delete successfully');
       } catch (error) {
         if (error instanceof Error) {
           alert(error.message);

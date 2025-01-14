@@ -7,7 +7,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from './ui/input';
 import { ClassMenuDropDown } from './ClassMenuDropdown';
 import { useMutation } from '@apollo/client';
-import { CREATE_STUDENT } from '@/lib/graphql/student.action';
+import { CREATE_STUDENT, GET_ALL_STUDENTS } from '@/lib/graphql/student.action';
 import { AlertClassNotSelect } from './AlertDialog';
 
 const formSchema = z.object({
@@ -29,7 +29,7 @@ const CreateStudentForm = () => {
     },
   });
 
-  const [createStudentMutation, { loading }] = useMutation(CREATE_STUDENT, { refetchQueries: ['findAllStudent'] });
+  const [createStudentMutation, { loading }] = useMutation(CREATE_STUDENT, { refetchQueries: [{query:GET_ALL_STUDENTS}] });
   const [selectedClass, setSelectedClass] = useState('classes');
 
   const handleClassSelect = (className: string) => {
