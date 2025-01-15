@@ -3,8 +3,11 @@ import { gql } from '@apollo/client';
 const CREATE_STUDENT = gql`
   mutation CreateStudent($studentName: String!, $classId: String!) {
     createStudent(createStudentInput: { studentName: $studentName, classId: $classId }) {
+      id
       studentName
-      classId
+      cls {
+        id
+      }
     }
   }
 `;
@@ -13,9 +16,11 @@ const GET_ALL_STUDENTS = gql`
   query {
     findAllStudent {
       id
-      classId
       studentName
-      className
+      cls {
+        id
+        className
+      }
     }
   }
 `;
@@ -24,9 +29,11 @@ const GET_STUDENT_BYID = gql`
   query findOneStudent($id: String!) {
     findOneStudent(id: $id) {
       id
-      classId
       studentName
-      className
+      cls {
+        id
+        className
+      }
     }
   }
 `;
@@ -36,7 +43,10 @@ const GET_STUDENT_BYCLASSNAME = gql`
     findByClassname(className: $className) {
       id
       studentName
-      className
+      cls {
+        id
+        className
+      }
     }
   }
 `;
@@ -46,7 +56,10 @@ const GET_STUDENT_BY_STUDENTNAME = gql`
     findLIKEByStudentName(studentName: $studentName) {
       id
       studentName
-      className
+      cls {
+        id
+        className
+      }
     }
   }
 `;
@@ -54,7 +67,7 @@ const GET_STUDENT_BY_STUDENTNAME = gql`
 const DELETE_A_STUDENT = gql`
   mutation RemoveStudents($id: String!) {
     removeStudents(id: $id) {
-      message
+      studentName
     }
   }
 `;
@@ -64,7 +77,10 @@ const UPDATE_STUDENT = gql`
     updateStudent(id: $id, updateStudentInput: { classId: $classId, studentName: $studentName }) {
       id
       studentName
-      classId
+      cls {
+        id
+        className
+      }
     }
   }
 `;
