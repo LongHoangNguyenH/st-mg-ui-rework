@@ -30,7 +30,7 @@ const GET_CLASS_BYID = gql`
 const REMOVE_A_CLASS = gql`
   mutation RemoveClass($id: String!) {
     removeClass(id: $id) {
-      message
+      className
     }
   }
 `;
