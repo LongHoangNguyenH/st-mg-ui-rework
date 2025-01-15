@@ -53,6 +53,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
         data.findAllStudent?.map((student: any) => ({
           ...student,
         })) || [];
+      console.log(students);
     }
     console.log('students', students);
     return {
@@ -171,8 +172,8 @@ const StudentsPage = ({ listStudents }: InferGetServerSidePropsType<typeof getSe
                   <TableRow key={index} className="text-black">
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>
-                      <Link href={`/classes/${studentItem.classId}`} className="hover:text-blue-400">
-                        {studentItem.className}
+                      <Link href={`/classes/${studentItem.cls['id']}`} className="hover:text-blue-400">
+                        {studentItem.cls['className']}
                       </Link>
                     </TableCell>
                     <TableCell>

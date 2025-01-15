@@ -75,7 +75,6 @@ const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServ
               <TableRow className="">
                 <TableHead className="w-[50px]">No</TableHead>
                 <TableHead className="">Class Name</TableHead>
-                <TableHead>Total of Student</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -88,7 +87,6 @@ const ClassesPage = ({ listClasses }: InferGetServerSidePropsType<typeof getServ
                       {classItem.className}
                     </Link>
                   </TableCell>
-                  <TableCell>total</TableCell>
                   <TableCell className="flex gap-3">
                     <Button
                       className="bg-red-400 hover:bg-red-700"

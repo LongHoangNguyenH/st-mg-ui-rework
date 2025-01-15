@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 import { GET_ALL_STUDENTS, GET_STUDENT_BYID } from '@/lib/graphql/student.action';
 import Link from 'next/link';
+import { studentType } from '@/types/studentType';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await client.query({
@@ -38,7 +39,7 @@ export const getStaticProps: GetStaticProps = async context => {
   };
 };
 
-const StudentPageDetail = ({ studentData }: { studentData: { studentName: string; classId: string; id: string } }) => {
+const StudentPageDetail = ({ studentData }: { studentData: studentType }) => {
   console.log(studentData);
   return (
     <div className="flex justify-center">
@@ -70,9 +71,24 @@ const StudentPageDetail = ({ studentData }: { studentData: { studentName: string
                     </div>
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="className">Class Name</Label>
+                    <Label htmlFor="className">Class ID</Label>
                     <div className="flex flex-row">
-                      <Input id="className" disabled placeholder={studentData.classId} className="text-black" />
+                      <Input id="className" disabled placeholder={studentData.cls['id']} className="text-black" />
+                      <Button>
+                        <Copy />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="className">Class ID</Label>
+                    <div className="flex flex-row">
+                      <Input
+                        id="className"
+                        disabled
+                        placeholder={studentData.cls['className']}
+                        className="text-black"
+                      />
                       <Button>
                         <Copy />
                       </Button>

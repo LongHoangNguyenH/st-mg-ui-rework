@@ -27,13 +27,10 @@ const UpdateClassPage = () => {
   useEffect(() => {
     if (data && data.findOneClass) {
       setCurrentClass(data.findOneClass.className);
-      console.log('currentClass', data.findOneClass); // Log giá trị khi dữ liệu đã sẵn sàng
     }
   }, [data]);
 
   const submitUpdateClass = useCallback(async () => {
-    console.log(id);
-    console.log(newClassName);
     try {
       await updateClass({
         variables: {

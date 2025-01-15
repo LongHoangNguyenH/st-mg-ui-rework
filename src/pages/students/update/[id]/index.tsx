@@ -13,8 +13,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 const UpdateStudentPage = () => {
   const router = useRouter();
   const id = router.query['id'] as string;
-  const [updateStudent] = useMutation(UPDATE_STUDENT,{
-    refetchQueries: [{query: GET_ALL_STUDENTS}]
+  const [updateStudent] = useMutation(UPDATE_STUDENT, {
+    refetchQueries: [{ query: GET_ALL_STUDENTS }],
   });
 
   const { data, loading } = useQuery(GET_STUDENT_BYID, {
@@ -23,30 +23,26 @@ const UpdateStudentPage = () => {
   });
 
   const [currentStudent, setCurrentStudent] = useState(Object);
-  const [newClassId, setNewClassId] = useState("");
-  const [newStudentName, setNewStudentName] = useState("");
+  const [newClassId, setNewClassId] = useState('');
+  const [newStudentName, setNewStudentName] = useState('');
 
   useEffect(() => {
     if (data && data.findOneStudent) {
       setCurrentStudent(data.findOneStudent);
-      console.log('currentClass', data.findOneStudent); // Log giá trị khi dữ liệu đã sẵn sàng
-      setNewClassId(data.findOneStudent.classId)
-      setNewStudentName(data.findOneStudent.studentName)
+      setNewClassId(data.findOneStudent.cls['id']);
+      setNewStudentName(data.findOneStudent.studentName);
     }
   }, [data]);
 
   const submitUpdateClass = useCallback(async () => {
-    console.log(id)
-    console.log(newClassId)
-    console.log(newStudentName)
     try {
       await updateStudent({
-        variables:{
+        variables: {
           id: id,
           classId: newClassId,
-          studentName: newStudentName
-        }
-      })
+          studentName: newStudentName,
+        },
+      });
       alert('Update class successfully');
     } catch (error) {
       if (error instanceof Error) {
@@ -55,7 +51,7 @@ const UpdateStudentPage = () => {
         alert('unexpected error');
       }
     }
-  }, [id, newClassId,newStudentName, updateStudent]);
+  }, [id, newClassId, newStudentName, updateStudent]);
 
   const handleCopyClick = (text: string) => {
     navigator.clipboard.writeText(text).then(
@@ -68,9 +64,9 @@ const UpdateStudentPage = () => {
     );
   };
 
-  const handleSelect = useCallback((className: string) => {
-    setNewClassId(className)
-  },[])
+  const handleSelect = useCallback((classId: string) => {
+    setNewClassId(classId);
+  }, []);
 
   return (
     <div className="flex justify-center">
@@ -83,7 +79,6 @@ const UpdateStudentPage = () => {
             <CardContent>
               <form>
                 <div className="grid w-full items-center gap-4">
-
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="name">Student ID</Label>
                     <div className="flex flex-row">
@@ -101,16 +96,18 @@ const UpdateStudentPage = () => {
                         id="studentName"
                         className="text-black"
                         placeholder={`${currentStudent.studentName}`}
-                        onChange={(e) => setNewStudentName(e.target.value)}
+                        onChange={e => setNewStudentName(e.target.value)}
                       />
                     </div>
                   </div>
 
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="className">Class Name</Label>
-                    <ClassMenuDropDown onClassSelect={handleSelect} currentParentClass={currentStudent.className}/>
+                    <ClassMenuDropDown
+                      onClassSelect={handleSelect}
+                      currentParentClass={currentStudent?.cls['className']}
+                    />
                   </div>
-
                 </div>
               </form>
             </CardContent>

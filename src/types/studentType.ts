@@ -1,12 +1,13 @@
+import { classType } from './classType';
+
 export class studentType {
-  constructor(id: string, classId: string, studentName: string, className: string) {
+  constructor(id: string, studentName: string, cls: classType) {
     this.id = id;
-    this.classId = classId;
     this.studentName = studentName;
-    this.className = className;
+    this.cls = cls;
   }
+
   id: string;
-  classId: string;
   studentName: string;
-  className: string;
+  cls: classType;
 }
